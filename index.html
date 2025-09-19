@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LyricVibes - Chilling Lyric Videos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #a78bfa;
+            --primary-light: #c4b5fd;
+            --secondary: #f0abfc;
+            --accent: #88d3ce;
+            --text: #334155;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: var(--text);
+            background-color: var(--bg);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-weight: 300;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        #search {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px var(--shadow);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        #search:focus {
+            outline: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .song-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .song-thumb {
+            height: 180px;
+            background: linear-gradient(120deg, var(--primary-light), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .song-info {
+            padding: 1.5rem;
+        }
+
+        .song-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .song-artist {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background: var(--secondary);
+        }
+
+        .lyrics-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .lyrics-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .lyrics-artist {
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .lyrics-text {
+            white-space: pre-line;
+            line-height: 1.8;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .songs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lyrics-container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <header>
+        <h1>LyricVibes</h1>
+        <p class="subtitle">Relaxing lyric videos for your favorite songs</p>
+    </header>
+
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search songs or artists...">
+        </div>
+
+        <div id="content">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <footer>
+        <p>Created with ❤️ for relaxing lyric videos</p>
+    </footer>
+
+    <script>
+        // Song data - in a real scenario, this would be in a separate JSON file
+        const songsData = [
+            {
+                id: 1,
+                title: "Dreams",
+                artist: "Fleetwood Mac",
+                lyrics: "Now here you go again\nYou say you want your freedom\nWell, who am I to keep you down?\nIt's only right that you should\nPlay the way you feel it\nBut listen carefully to the sound\nOf your loneliness\nLike a heartbeat drives you mad\nIn the stillness of remembering what you had\nAnd what you lost\nAnd what you had\nAnd what you lost",
+                youtubeId: "dQw4w9WgXcQ"
+            },
+            {
+                id: 2,
+                title: "Blinding Lights",
+                artist: "The Weeknd",
+                lyrics: "I been tryna call\nI been on my own for long enough\nMaybe you can show me how to love, maybe\nI'm going through withdrawals\nYou don't even have to do too much\nYou can turn me on with just a touch, baby\nI look around and Sin City's cold and empty (oh)\nNo one's around to judge me (oh)\nI can't see clearly when you're gone",
+                youtubeId: "dQw4w9WgXcQ"
+            },
+            {
+                id: 3,
+                title: "Stay",
+                artist: "Post Malone ft. Rihanna",
+                lyrics: "All along, it was a fever\nA cold sweat, hot-headed believer\nI threw my hands in the air, said, \"Show me something\"\nHe said, \"If you dare, come a little closer\"\nRound and around and around and around we go\nOh now, tell me now, tell me now, tell me now you know\nNot really sure how to feel about it\nSomething in the way you move",
+                youtubeId: "dQw4w9WgXcQ"
+            },
+            {
+                id: 4,
+                title: "Good Days",
+                artist: "SZA",
+                lyrics: "Good day in my mind, safe to take a step out\nGet some air now, let your edge out\nI can't let this kill me, let it drain\nNo, I can't sleep these days\nYou is not my baby, find somebody\nAlways on my mind, always on my mind\nAlways on my mind, tell me\nWhy can't I let go of you?\nAlways in my mind, always in my head",
+                youtubeId: "dQw4w9WgXcQ"
+            }
+           
+                
+        ];
+
+        // DOM elements
+        const contentDiv = document.getElementById('content');
+        const searchInput = document.getElementById('search');
+
+        // Function to display all songs
+        function displaySongs(songs) {
+            if (songs.length === 0) {
+                contentDiv.innerHTML = `<div class="no-results">No songs found. Try a different search.</div>`;
+                return;
+            }
+
+            let html = `<div class="songs-grid">`;
+            
+            songs.forEach(song => {
+                html += `
+                    <div class="song-card" data-id="${song.id}">
+                        <div class="song-thumb">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="song-info">
+                            <h3 class="song-title">${song.title}</h3>
+                            <p class="song-artist">${song.artist}</p>
+                            <a href="#" class="view-btn">View Lyrics</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            
+            contentDiv.innerHTML = html;
+            
+            // Add event listeners to song cards
+            document.querySelectorAll('.song-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    showSong(id);
+                });
+            });
+        }
+          // Function to display a single song
+        function showSong(id) {
+            const song = songsData.find(song => song.id === id);
+            
+            if (!song) {
+                contentDiv.innerHTML = `<div class="no-results">Song not found.</div>`;
+                return;
+            }
+            
+            const html = `
+                <a href="#" class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back to all songs</a>
+                <div class="lyrics-container">
+                    <h2 class="lyrics-title">${song.title}</h2>
+                    <p class="lyrics-artist">${song.artist}</p>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${song.youtubeId}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <div class="lyrics-text">${song.lyrics}</div>
+                    
+                    <div style="text-align: center;">
+                        <a href="https://www.youtube.com/watch?v=${song.youtubeId}" 
+                           target="_blank" 
+                           class="view-btn">
+                            Watch on YouTube
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            contentDiv.innerHTML = html;
+            
+            // Add event listener to back button
+            document.getElementById('backButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                displaySongs(songsData);
+            });
+        }
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            if (searchTerm.length === 0) {
+                displaySongs(songsData);
+                return;
+            }
+            
+            const filteredSongs = songsData.filter(song => {
+                return (
+                    song.title.toLowerCase().includes(searchTerm) ||
+                    song.artist.toLowerCase().includes(searchTerm)
+                );
+            });
+            
+            displaySongs(filteredSongs);
+        });
+
+        // Initialize the page
+        displaySongs(songsData);
+    </script>
+</body>
+</html>
